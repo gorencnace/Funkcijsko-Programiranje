@@ -1,0 +1,39 @@
+Standard ML of New Jersey (32-bit) v110.98.1 [built: Wed Aug 26 08:41:54 2020]
+- use "v1.sml";
+[opening v1.sml]
+val a = 3 : int
+
+val it = () : unit
+
+-a;
+val it = 3 : int
+
+- val b = 1000000000;
+val b = 1000000000 : int
+
+-val b = 1000000000000000000000000000;
+stdIn:4.9-4.37 Error: literal '1000000000000000000000000000' is too large for type 
+                                                                                      int
+
+- val b = 1000000000000000000000000000 : largeint;
+stdIn:4.3-4.11 Error: unbound type constructor: largeint
+
+stdIn:1.10-3.20 Error: literal '1000000000000000000000000000' is too large for type 
+                                                                                       [E]
+
+- val b = 1000000000000000000000000000 : LargeInt.int;
+[autoloading]
+[library $SMLNJ-BASIS/basis.cm is stable]
+[library $SMLNJ-BASIS/(basis.cm):basis-common.cm is stable]
+[autoloading done]
+val b = 1000000000000000000000000000 : IntInf.int
+
+- b
+= ;
+val it = 1000000000000000000000000000 : IntInf.int
+
+- b
+= ;
+val it = 1000000000000000000000000000 : IntInf.int
+
+- 
