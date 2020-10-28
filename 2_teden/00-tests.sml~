@@ -1,5 +1,0 @@
-val _ = print "--------- test ---------";
-val _ : int -> int = next;
-val test1 = next 1 = 2;
-val test2 = next 3 = 4;
-val test3 = next 5 = 6;
