@@ -1,0 +1,10 @@
+datatype izraz = Konstanta of int
+	       | Negiraj of izraz
+	       | Plus of izraz * izraz
+	       | Minus of izeaz * izraz
+	       | Krat of izraz * izraz
+               | Deljeno of izraz * izraz
+	       |ostanek of izraz * izraz;
+
+Val izraz1 = Konstanta 3;
+				
