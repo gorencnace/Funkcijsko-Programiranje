@@ -78,7 +78,20 @@ fun simp (n: number) =
     in
 	zgradi(prestej(0, n), Zero)
     end;
-	
+
+fun simp1 Zero = Zero
+  | simp1 (Pred (n)) = let val a = simp1 (n)
+		       in
+			   case a of
+			       Succ(x) => x
+			     | _ => Pred (a)
+		       end
+  | simp1 (Succ (n)) = let val a = simp1 (n)
+		       in
+			   case a of
+			       Pred (x) => x
+			     | _ => Succ(a)
+		       end;
 
 (** Drevesa **)
 datatype tree = Node of int * tree * tree
@@ -210,3 +223,9 @@ fun isBST (tree : tree) =
     case tree of
 	Leaf _ => true
       | Node (x, L, R) => max (L) < x andalso x < min (R) andalso isBST (L) andalso isBST (R);
+
+(** Dodatne naloge **)
+datatype bstree = br of bstree * int * bstree | lf;
+type name = {first : string, last : string};
+type date = {month : string, day : int, year : int};
+type person = {name : name, birthdate : date};
