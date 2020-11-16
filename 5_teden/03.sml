@@ -81,12 +81,13 @@ fun rotate (br (br (a, p, b), q, c), R) = br (a, p, br (b, q, c))
 
 
 fun height lf = 0
-  | height (br (l, v, r)) = 1 + Int.max (height (l), height (r))
+  | height (br (l, v, r)) = 1 + Int.max (height (l), height (r));
 
 fun factor lf = 0
-  | factor (br (l, v, r)) = height (r) - height (l)
+  | factor (br (l, v, r)) = height (r) - height (l);
 
-fun rebalance (br (a, b, c)) =
+fun rebalance lf = lf
+  | rebalance (br (a, b, c)) =
     case factor (br (a, b, c)) of
 	~2 => (case factor (a) of
 		   ~1 => rotate (br (a, b, c), R)
@@ -96,7 +97,7 @@ fun rebalance (br (a, b, c)) =
 		    1 => rotate (br (a, b, c), L)
 		  | _ => rotate (br (a, b, rotate (c, R)), L)
 	      )
-       | _ => br (a, b, c);
+       | _ => br (a, b, c)  
 
 
 fun avl (c, lf, e) = br (lf, e, lf)
