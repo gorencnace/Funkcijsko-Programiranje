@@ -1,0 +1,2 @@
+#lang racket
+(define ones (cons 1 (lambda () ones)))
