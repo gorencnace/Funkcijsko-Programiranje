@@ -1,0 +1,1013 @@
+Standard ML of New Jersey (32-bit) v110.98.1 [built: Wed Aug 26 08:41:54 2020]
+- use "01-project.sml";
+[opening 01-project.sml]
+datatype 'a expr
+  = !! of 'a expr
+  | /\ of 'a expr * 'a expr
+  | <=> of 'a expr * 'a expr
+  | ==> of 'a expr * 'a expr
+  | F
+  | T
+  | V of 'a
+  | \/ of 'a expr * 'a expr
+
+infix 5 <=>
+
+infixr 6 ==>
+
+infix 7 \/
+
+infix 8 /\
+
+datatype 'a expression
+  = And of 'a expression list
+  | Eq of 'a expression list
+  | False
+  | Imp of 'a expression * 'a expression
+  | Not of 'a expression
+  | Or of 'a expression list
+  | True
+  | Var of 'a
+
+datatype 'a stream = Next of 'a * (unit -> 'a stream)
+
+[autoloading]
+[library $SMLNJ-BASIS/basis.cm is stable]
+[library $SMLNJ-BASIS/(basis.cm):basis-common.cm is stable]
+[autoloading done]
+val lcg = fn : int -> ?.intinf stream
+
+val int2bool = fn : IntInf.int -> bool
+
+exception InvalidCNF
+
+exception NotImplemented
+
+[autoloading]
+[library $smlnj/compiler/current.cm is stable]
+[library $smlnj/compiler/x86.cm is stable]
+[library $smlnj/viscomp/core.cm is stable]
+[library $smlnj/viscomp/basics.cm is stable]
+[library $smlnj/viscomp/elabdata.cm is stable]
+[library $smlnj/viscomp/elaborate.cm is stable]
+[library $compiler/(core.cm):Library/const-arith/sources.cm is stable]
+[library $smlnj/MLRISC/Lib.cm is stable]
+[library $SMLNJ-MLRISC/Lib.cm is stable]
+[library $SMLNJ-LIB/Util/smlnj-lib.cm is stable]
+[library $smlnj/MLRISC/Control.cm is stable]
+[library $SMLNJ-MLRISC/Control.cm is stable]
+[library $controls-lib.cm(=$SMLNJ-LIB/Controls)/controls-lib.cm is stable]
+[library $smlnj/smlnj-lib/controls-lib.cm is stable]
+[autoloading done]
+val it = () : unit
+
+val it = () : unit
+
+val it = () : unit
+
+[autoloading]
+[autoloading done]
+01-project.sml:51.61-51.63 Warning: calling polyEqual
+
+val getVars = fn : ''a expression -> ''a list
+
+01-project.sml:59.31 Warning: calling polyEqual
+
+val eval = fn : ''a list -> ''a expression -> bool
+
+val rmEmpty = fn : 'a expression -> 'a expression
+
+01-project.sml:94.6-100.59 Warning: match nonexhaustive
+          Eq (x1 :: x2 :: nil) => ...
+          Eq (x1 :: x2 :: xs) => ...
+          And (x1 :: x2 :: nil) => ...
+          And (x :: xs) => ...
+          Or (x1 :: x2 :: nil) => ...
+          Or (x :: xs) => ...
+  
+
+val beautify = fn : 'a expression -> 'a expr
+
+val pushNegations = fn : 'a expression -> 'a expression
+
+01-project.sml:154.41 Warning: calling polyEqual
+
+01-project.sml:152.48-152.50 Warning: calling polyEqual
+
+01-project.sml:161.40 Warning: calling polyEqual
+
+01-project.sml:159.47-159.49 Warning: calling polyEqual
+
+val rmConstants = fn : ''a expression -> ''a expression
+
+01-project.sml:181.34 Warning: calling polyEqual
+
+01-project.sml:182.91 Warning: calling polyEqual
+
+01-project.sml:183.89 Warning: calling polyEqual
+
+01-project.sml:184.33 Warning: calling polyEqual
+
+01-project.sml:185.89 Warning: calling polyEqual
+
+val rmVars = fn : ''a expression -> ''a expression
+
+01-project.sml:195.7 Warning: calling polyEqual
+
+val simplify = fn : ''a expression -> ''a expression
+
+val getNext = fn : 'a stream -> 'a stream
+
+val getCurr = fn : 'a stream -> 'a
+
+[autoloading]
+[autoloading done]
+val prTestEq = fn : int -> ''a expression -> ''a expression -> bool
+
+val isCNF = fn : 'a expression -> bool
+
+val toWolframLang = fn : ('a -> string) -> 'a expression -> string
+
+01-project.sml:245.39 Warning: calling polyEqual
+
+01-project.sml:251.2-254.35 Warning: match nonexhaustive
+          And y => ...
+          Or y => ...
+          Not y => ...
+  
+
+val eval2 = fn
+  : ''a expression -> ''a expression -> ''a expression -> ''a expression
+
+val firstFree = fn : 'a expression -> 'a expression * 'b expression
+
+val isOrNil = fn : 'a expression -> bool
+
+01-project.sml:300.18-300.20 Warning: calling polyEqual
+
+01-project.sml:301.27 Warning: calling polyEqual
+
+01-project.sml:291.5-325.38 Warning: match nonexhaustive
+          And exps => ...
+          Or exps => ...
+          True => ...
+          False => ...
+          Var x => ...
+          Not (Var x) => ...
+  
+
+val tretjiKorak = fn : ''a expression -> ''a list -> ''a list option
+val drugiKorak = fn : ''a expression -> ''a list -> ''a list option
+val satSolver = fn : ''a expression -> ''a list option
+
+val it = () : unit
+
+- val a = (And [Or [Var 1, Not (Var 1)]])
+= ;
+val a = And [Or [Var 1,Not (Var 1)]] : int expression
+
+- satSolver a;
+val it = SOME [1] : int list option
+
+- val a = (And [Or [Var 1, Not (Var 1)], Var 2, Not (Var 3], Or[], Or[Not (Var 2), Var 1]);
+stdIn:5.57-5.59 Error: syntax error: deleting  RBRACKET COMMA
+
+- val a = (And [Or [Var 1, Not (Var 1)], Var 2, Not (Var 3], Or[], Or[Not (Var 2), Var 1]]);
+stdIn:2.35-2.37 Error: syntax error: deleting  RBRACKET COMMA
+
+- val a = (And [Or [Var 1, Not (Var 1)], Var 2, Not (Var 3], Or[], Or[Not (Var 2), Var 1]]);
+stdIn:2.35-2.37 Error: syntax error: deleting  RBRACKET COMMA
+
+- val a = (And [Or [Var 1, Not (Var 1)], Var 2, Not (Var 3), Or[], Or[Not (Var 2), Var 1]]);
+val a =
+  And [Or [Var 1,Not (Var 1)],Var 2,Not (Var 3),Or [],Or [Not (Var 2),Var 1]]
+  : int expression
+
+- satSolver a;
+val it = NONE : int list option
+
+- val a = (And [Or [Var 1, Not (Var 1)], Var 2, Not (Var 3), Or[Not (Var 2), Var 1]]);
+val a = And [Or [Var 1,Not (Var 1)],Var 2,Not (Var 3),Or [Not (Var 2),Var 1]]
+  : int expression
+
+- satSolver a;
+val it = SOME [2,1] : int list option
+
+- val a = (And [Or [Var 1, Not (Var 1)], Var 2, Not (Var 3), Or[Not (Var 2), Var 3]]);
+val a = And [Or [Var 1,Not (Var 1)],Var 2,Not (Var 3),Or [Not (Var 2),Var 3]]
+  : int expression
+
+- satSolver a;
+val it = NONE : int list option
+
+- val a = (And [Or [Var 1, Not (Var 1)], Var 2, Not (Var 3), Or[Not (Var 3), Var 1]]);
+val a = And [Or [Var 1,Not (Var 1)],Var 2,Not (Var 3),Or [Not (Var 3),Var 1]]
+  : int expression
+
+- satSolver a;
+val it = SOME [2,1] : int list option
+
+- val a = And [Or [Not (Var 1), Not (Var 5), Var 7, Var 7], Or [Var 1, Var 4, Not (Var 7)], Or [Not (Var 1), Var 6, Not (Var 7), Var 7, Var 7], Or [Var 2, Var 5, Not (Var 7), Var 7], Or [Not (Var 4), Var 7, Var 7, Var 7], Or [Var 7, Var 7, Var 7, Not (Var 7)], Or [Var 2, Not (Var 7), Var 7], Or [Not (Var 3), Not (Var 1), Var 7, Var 7], Or [Var 5, Var 4, Not (Var 7)], Or [Var 3, Var 6, Not (Var 7), Var 7], Or [Var 3, Var 1, Var 5, Not (Var 7)], Or [Var 2, Var 5, Not (Var 7)], Or [Not (Var 1), Not (Var 4), Var 7], Or [Not (Var 2), Not (Var 4), Var 7, Var 7], Or [Not (Var 2), Not (Var 5), Not (Var 7), Var 7], Or [Not (Var 3), Not (Var 6), Not (Var 7), Not (Var 7)], Or [Var 3, Var 2, Not (Var 7)], Or [Var 5, Var 6], Or [Not (Var 2), Not (Var 5), Var 7, Var 7, Var 7], Or [Var 3, Var 6], Or [Var 1, Var 5, Var 4, Not (Var 7)], Or [Not (Var 3), Not (Var 5), Var 7, Not (Var 7), Not (Var 7)], Or [Not (Var 3), Var 1, Not (Var 5), Not (Var 7), Not (Var 7)], Or [Var 2, Var 6], Or [Var 1, Not (Var 7)], Or [Not (Var 6), Not (Var 5), Not (Var 7), Not (Var 7)], Or [Var 5, Not (Var 7), Var 7], Or [Not (Var 2), Var 5, Var 7, Not (Var 7)], Or [Not (Var 6), Not (Var 4), Var 7, Not (Var 7)], Or [Var 3, Var 2, Var 1, Not (Var 7)], Or [Not (Var 3), Var 1, Not (Var 6), Var 4, Not (Var 7), Not (Var 7)], Or [Var 6, Not (Var 7)], Or [Var 3, Not (Var 7)], Or [Var 2, Var 3], Or [Not (Var 2), Not (Var 1), Not (Var 6), Not (Var 5), Not (Var 7), Not (Var 7)], Or [Not (Var 2), Var 5, Var 7], Or [Var 3, Var 5], Or [Not (Var 3), Not (Var 2), Not (Var 7), Not (Var 7)], Or [Not (Var 2), Not (Var 5), Var 7, Not (Var 7), Var 7, Not (Var 7)], Or [Var 2, Not (Var 5), Var 7], Or [Var 2, Var 6, Var 4, Not (Var 7)], Or [Var 2, Not (Var 5), Var 7, Not (Var 7)], Or [Var 6, Var 5, Not (Var 7)], Or [Var 4, Not (Var 7)], Or [Var 3, Var 6, Not (Var 7), Not (Var 7)]];
+val a =
+  And
+    [Or [Not (Var 1),Not (Var 5),Var 7,Var 7],Or [Var 1,Var 4,Not (Var 7)],
+     Or [Not (Var 1),Var 6,Not (Var 7),Var 7,Var 7],
+     Or [Var 2,Var 5,Not (Var 7),Var 7],Or [Not (Var 4),Var 7,Var 7,Var 7],
+     Or [Var 7,Var 7,Var 7,Not (Var 7)],Or [Var 2,Not (Var 7),Var 7],
+     Or [Not (Var 3),Not (Var 1),Var 7,Var 7],Or [Var 5,Var 4,Not (Var 7)],
+     Or [Var 3,Var 6,Not (Var 7),Var 7],Or [Var 3,Var 1,Var 5,Not (Var 7)],
+     Or [Var 2,Var 5,Not (Var 7)],Or [Not (Var 1),Not (Var 4),Var 7],
+     Or [Not (Var 2),Not (Var 4),Var 7,Var 7],
+     Or [Not (Var 2),Not (Var 5),Not (Var 7),Var 7],
+     Or [Not (Var 3),Not (Var 6),Not (Var 7),Not (Var 7)],
+     Or [Var 3,Var 2,Not (Var 7)],Or [Var 5,Var 6],
+     Or [Not (Var 2),Not (Var 5),Var 7,Var 7,Var 7],Or [Var 3,Var 6],
+     Or [Var 1,Var 5,Var 4,Not (Var 7)],
+     Or [Not (Var 3),Not (Var 5),Var 7,Not (Var 7),Not (Var 7)],
+     Or [Not (Var 3),Var 1,Not (Var 5),Not (Var 7),Not (Var 7)],
+     Or [Var 2,Var 6],Or [Var 1,Not (Var 7)],
+     Or [Not (Var 6),Not (Var 5),Not (Var 7),Not (Var 7)],
+     Or [Var 5,Not (Var 7),Var 7],Or [Not (Var 2),Var 5,Var 7,Not (Var 7)],
+     Or [Not (Var 6),Not (Var 4),Var 7,Not (Var 7)],
+     Or [Var 3,Var 2,Var 1,Not (Var 7)],
+     Or [Not (Var 3),Var 1,Not (Var 6),Var 4,Not (Var 7),Not (Var 7)],
+     Or [Var 6,Not (Var 7)],Or [Var 3,Not (Var 7)],Or [Var 2,Var 3],
+     Or
+       [Not (Var 2),Not (Var 1),Not (Var 6),Not (Var 5),Not (Var 7),
+        Not (Var 7)],Or [Not (Var 2),Var 5,Var 7],Or [Var 3,Var 5],
+     Or [Not (Var 3),Not (Var 2),Not (Var 7),Not (Var 7)],
+     Or [Not (Var 2),Not (Var 5),Var 7,Not (Var 7),Var 7,Not (Var 7)],
+     Or [Var 2,Not (Var 5),Var 7],Or [Var 2,Var 6,Var 4,Not (Var 7)],
+     Or [Var 2,Not (Var 5),Var 7,Not (Var 7)],Or [Var 6,Var 5,Not (Var 7)],
+     Or [Var 4,Not (Var 7)],Or [Var 3,Var 6,Not (Var 7),Not (Var 7)]]
+  : int expression
+
+-val exp = a;
+val exp =
+  And
+    [Or [Not (Var 1),Not (Var 5),Var 7,Var 7],Or [Var 1,Var 4,Not (Var 7)],
+     Or [Not (Var 1),Var 6,Not (Var 7),Var 7,Var 7],
+     Or [Var 2,Var 5,Not (Var 7),Var 7],Or [Not (Var 4),Var 7,Var 7,Var 7],
+     Or [Var 7,Var 7,Var 7,Not (Var 7)],Or [Var 2,Not (Var 7),Var 7],
+     Or [Not (Var 3),Not (Var 1),Var 7,Var 7],Or [Var 5,Var 4,Not (Var 7)],
+     Or [Var 3,Var 6,Not (Var 7),Var 7],Or [Var 3,Var 1,Var 5,Not (Var 7)],
+     Or [Var 2,Var 5,Not (Var 7)],Or [Not (Var 1),Not (Var 4),Var 7],
+     Or [Not (Var 2),Not (Var 4),Var 7,Var 7],
+     Or [Not (Var 2),Not (Var 5),Not (Var 7),Var 7],
+     Or [Not (Var 3),Not (Var 6),Not (Var 7),Not (Var 7)],
+     Or [Var 3,Var 2,Not (Var 7)],Or [Var 5,Var 6],
+     Or [Not (Var 2),Not (Var 5),Var 7,Var 7,Var 7],Or [Var 3,Var 6],
+     Or [Var 1,Var 5,Var 4,Not (Var 7)],
+     Or [Not (Var 3),Not (Var 5),Var 7,Not (Var 7),Not (Var 7)],
+     Or [Not (Var 3),Var 1,Not (Var 5),Not (Var 7),Not (Var 7)],
+     Or [Var 2,Var 6],Or [Var 1,Not (Var 7)],
+     Or [Not (Var 6),Not (Var 5),Not (Var 7),Not (Var 7)],
+     Or [Var 5,Not (Var 7),Var 7],Or [Not (Var 2),Var 5,Var 7,Not (Var 7)],
+     Or [Not (Var 6),Not (Var 4),Var 7,Not (Var 7)],
+     Or [Var 3,Var 2,Var 1,Not (Var 7)],
+     Or [Not (Var 3),Var 1,Not (Var 6),Var 4,Not (Var 7),Not (Var 7)],
+     Or [Var 6,Not (Var 7)],Or [Var 3,Not (Var 7)],Or [Var 2,Var 3],
+     Or
+       [Not (Var 2),Not (Var 1),Not (Var 6),Not (Var 5),Not (Var 7),
+        Not (Var 7)],Or [Not (Var 2),Var 5,Var 7],Or [Var 3,Var 5],
+     Or [Not (Var 3),Not (Var 2),Not (Var 7),Not (Var 7)],
+     Or [Not (Var 2),Not (Var 5),Var 7,Not (Var 7),Var 7,Not (Var 7)],
+     Or [Var 2,Not (Var 5),Var 7],Or [Var 2,Var 6,Var 4,Not (Var 7)],
+     Or [Var 2,Not (Var 5),Var 7,Not (Var 7)],Or [Var 6,Var 5,Not (Var 7)],
+     Or [Var 4,Not (Var 7)],Or [Var 3,Var 6,Not (Var 7),Not (Var 7)]]
+  : int expression
+
+- val free = ref (firstFree (exp));
+stdIn:16.5-16.33 Warning: type vars not generalized because of
+   value restriction are instantiated to dummy types (X1,X2,...)
+
+val free = ref (False,False) : (int expression * ?.X1 expression) ref
+
+- isOrNil exp;
+val it = false : bool
+
+- val arg = hd (getVars exp);
+val arg = 1 : int
+
+- val tmp = rmConstants(eval2 exp (Var arg) True);
+val tmp =
+  And
+    [Or [Not (Var 5),Var 7,Var 7],Or [Var 6,Not (Var 7),Var 7,Var 7],
+     Or [Var 2,Var 5,Not (Var 7),Var 7],Or [Not (Var 4),Var 7,Var 7,Var 7],
+     Or [Var 7,Var 7,Var 7,Not (Var 7)],Or [Var 2,Not (Var 7),Var 7],
+     Or [Not (Var 3),Var 7,Var 7],Or [Var 5,Var 4,Not (Var 7)],
+     Or [Var 3,Var 6,Not (Var 7),Var 7],Or [Var 2,Var 5,Not (Var 7)],
+     Or [Not (Var 4),Var 7],Or [Not (Var 2),Not (Var 4),Var 7,Var 7],
+     Or [Not (Var 2),Not (Var 5),Not (Var 7),Var 7],
+     Or [Not (Var 3),Not (Var 6),Not (Var 7),Not (Var 7)],
+     Or [Var 3,Var 2,Not (Var 7)],Or [Var 5,Var 6],
+     Or [Not (Var 2),Not (Var 5),Var 7,Var 7,Var 7],Or [Var 3,Var 6],
+     Or [Not (Var 3),Not (Var 5),Var 7,Not (Var 7),Not (Var 7)],
+     Or [Var 2,Var 6],Or [Not (Var 6),Not (Var 5),Not (Var 7),Not (Var 7)],
+     Or [Var 5,Not (Var 7),Var 7],Or [Not (Var 2),Var 5,Var 7,Not (Var 7)],
+     Or [Not (Var 6),Not (Var 4),Var 7,Not (Var 7)],Or [Var 6,Not (Var 7)],
+     Or [Var 3,Not (Var 7)],Or [Var 2,Var 3],
+     Or [Not (Var 2),Not (Var 6),Not (Var 5),Not (Var 7),Not (Var 7)],
+     Or [Not (Var 2),Var 5,Var 7],Or [Var 3,Var 5],
+     Or [Not (Var 3),Not (Var 2),Not (Var 7),Not (Var 7)],
+     Or [Not (Var 2),Not (Var 5),Var 7,Not (Var 7),Var 7,Not (Var 7)],
+     Or [Var 2,Not (Var 5),Var 7],Or [Var 2,Var 6,Var 4,Not (Var 7)],
+     Or [Var 2,Not (Var 5),Var 7,Not (Var 7)],Or [Var 6,Var 5,Not (Var 7)],
+     Or [Var 4,Not (Var 7)],Or [Var 3,Var 6,Not (Var 7),Not (Var 7)]]
+  : int expression
+
+- val tmp1 = rmConstants(eval2 exp (Var arg) True);
+val tmp1 =
+  And
+    [Or [Not (Var 5),Var 7,Var 7],Or [Var 6,Not (Var 7),Var 7,Var 7],
+     Or [Var 2,Var 5,Not (Var 7),Var 7],Or [Not (Var 4),Var 7,Var 7,Var 7],
+     Or [Var 7,Var 7,Var 7,Not (Var 7)],Or [Var 2,Not (Var 7),Var 7],
+     Or [Not (Var 3),Var 7,Var 7],Or [Var 5,Var 4,Not (Var 7)],
+     Or [Var 3,Var 6,Not (Var 7),Var 7],Or [Var 2,Var 5,Not (Var 7)],
+     Or [Not (Var 4),Var 7],Or [Not (Var 2),Not (Var 4),Var 7,Var 7],
+     Or [Not (Var 2),Not (Var 5),Not (Var 7),Var 7],
+     Or [Not (Var 3),Not (Var 6),Not (Var 7),Not (Var 7)],
+     Or [Var 3,Var 2,Not (Var 7)],Or [Var 5,Var 6],
+     Or [Not (Var 2),Not (Var 5),Var 7,Var 7,Var 7],Or [Var 3,Var 6],
+     Or [Not (Var 3),Not (Var 5),Var 7,Not (Var 7),Not (Var 7)],
+     Or [Var 2,Var 6],Or [Not (Var 6),Not (Var 5),Not (Var 7),Not (Var 7)],
+     Or [Var 5,Not (Var 7),Var 7],Or [Not (Var 2),Var 5,Var 7,Not (Var 7)],
+     Or [Not (Var 6),Not (Var 4),Var 7,Not (Var 7)],Or [Var 6,Not (Var 7)],
+     Or [Var 3,Not (Var 7)],Or [Var 2,Var 3],
+     Or [Not (Var 2),Not (Var 6),Not (Var 5),Not (Var 7),Not (Var 7)],
+     Or [Not (Var 2),Var 5,Var 7],Or [Var 3,Var 5],
+     Or [Not (Var 3),Not (Var 2),Not (Var 7),Not (Var 7)],
+     Or [Not (Var 2),Not (Var 5),Var 7,Not (Var 7),Var 7,Not (Var 7)],
+     Or [Var 2,Not (Var 5),Var 7],Or [Var 2,Var 6,Var 4,Not (Var 7)],
+     Or [Var 2,Not (Var 5),Var 7,Not (Var 7)],Or [Var 6,Var 5,Not (Var 7)],
+     Or [Var 4,Not (Var 7)],Or [Var 3,Var 6,Not (Var 7),Not (Var 7)]]
+  : int expression
+
+- val free = ref (firstFree (tmp1));
+stdIn:21.5-21.34 Warning: type vars not generalized because of
+   value restriction are instantiated to dummy types (X1,X2,...)
+
+val free = ref (False,False) : (int expression * ?.X1 expression) ref
+
+- isOrNil tmp1;
+val it = false : bool
+
+- val arg1 = hd (getVars exp);
+val arg1 = 1 : int
+
+-  val arg1 = hd (getVars tmp1);
+val arg1 = 5 : int
+
+- val tmp1 = rmConstants(eval2 tmp1 (Var arg1) True);
+val tmp1 =
+  And
+    [Or [Var 7,Var 7],Or [Var 6,Not (Var 7),Var 7,Var 7],
+     Or [Not (Var 4),Var 7,Var 7,Var 7],Or [Var 7,Var 7,Var 7,Not (Var 7)],
+     Or [Var 2,Not (Var 7),Var 7],Or [Not (Var 3),Var 7,Var 7],
+     Or [Var 3,Var 6,Not (Var 7),Var 7],Or [Not (Var 4),Var 7],
+     Or [Not (Var 2),Not (Var 4),Var 7,Var 7],
+     Or [Not (Var 2),Not (Var 7),Var 7],
+     Or [Not (Var 3),Not (Var 6),Not (Var 7),Not (Var 7)],
+     Or [Var 3,Var 2,Not (Var 7)],Or [Not (Var 2),Var 7,Var 7,Var 7],
+     Or [Var 3,Var 6],Or [Not (Var 3),Var 7,Not (Var 7),Not (Var 7)],
+     Or [Var 2,Var 6],Or [Not (Var 6),Not (Var 7),Not (Var 7)],
+     Or [Not (Var 6),Not (Var 4),Var 7,Not (Var 7)],Or [Var 6,Not (Var 7)],
+     Or [Var 3,Not (Var 7)],Or [Var 2,Var 3],
+     Or [Not (Var 2),Not (Var 6),Not (Var 7),Not (Var 7)],
+     Or [Not (Var 3),Not (Var 2),Not (Var 7),Not (Var 7)],
+     Or [Not (Var 2),Var 7,Not (Var 7),Var 7,Not (Var 7)],Or [Var 2,Var 7],
+     Or [Var 2,Var 6,Var 4,Not (Var 7)],Or [Var 2,Var 7,Not (Var 7)],
+     Or [Var 4,Not (Var 7)],Or [Var 3,Var 6,Not (Var 7),Not (Var 7)]]
+  : int expression
+
+- val free = ref (firstFree (tmp2));
+stdIn:26.28-26.32 Error: unbound variable or constructor: tmp2
+
+stdIn:26.5-26.34 Warning: type vars not generalized because of
+   value restriction are instantiated to dummy types (X1,X2,...)
+
+- val tmp2 = rmConstants(eval2 tmp1 (Var arg1) True);
+val tmp2 =
+  And
+    [Or [Var 7,Var 7],Or [Var 6,Not (Var 7),Var 7,Var 7],
+     Or [Not (Var 4),Var 7,Var 7,Var 7],Or [Var 7,Var 7,Var 7,Not (Var 7)],
+     Or [Var 2,Not (Var 7),Var 7],Or [Not (Var 3),Var 7,Var 7],
+     Or [Var 3,Var 6,Not (Var 7),Var 7],Or [Not (Var 4),Var 7],
+     Or [Not (Var 2),Not (Var 4),Var 7,Var 7],
+     Or [Not (Var 2),Not (Var 7),Var 7],
+     Or [Not (Var 3),Not (Var 6),Not (Var 7),Not (Var 7)],
+     Or [Var 3,Var 2,Not (Var 7)],Or [Not (Var 2),Var 7,Var 7,Var 7],
+     Or [Var 3,Var 6],Or [Not (Var 3),Var 7,Not (Var 7),Not (Var 7)],
+     Or [Var 2,Var 6],Or [Not (Var 6),Not (Var 7),Not (Var 7)],
+     Or [Not (Var 6),Not (Var 4),Var 7,Not (Var 7)],Or [Var 6,Not (Var 7)],
+     Or [Var 3,Not (Var 7)],Or [Var 2,Var 3],
+     Or [Not (Var 2),Not (Var 6),Not (Var 7),Not (Var 7)],
+     Or [Not (Var 3),Not (Var 2),Not (Var 7),Not (Var 7)],
+     Or [Not (Var 2),Var 7,Not (Var 7),Var 7,Not (Var 7)],Or [Var 2,Var 7],
+     Or [Var 2,Var 6,Var 4,Not (Var 7)],Or [Var 2,Var 7,Not (Var 7)],
+     Or [Var 4,Not (Var 7)],Or [Var 3,Var 6,Not (Var 7),Not (Var 7)]]
+  : int expression
+
+- val tmp1 = rmConstants(eval2 exp (Var 1) True);
+val tmp1 =
+  And
+    [Or [Not (Var 5),Var 7,Var 7],Or [Var 6,Not (Var 7),Var 7,Var 7],
+     Or [Var 2,Var 5,Not (Var 7),Var 7],Or [Not (Var 4),Var 7,Var 7,Var 7],
+     Or [Var 7,Var 7,Var 7,Not (Var 7)],Or [Var 2,Not (Var 7),Var 7],
+     Or [Not (Var 3),Var 7,Var 7],Or [Var 5,Var 4,Not (Var 7)],
+     Or [Var 3,Var 6,Not (Var 7),Var 7],Or [Var 2,Var 5,Not (Var 7)],
+     Or [Not (Var 4),Var 7],Or [Not (Var 2),Not (Var 4),Var 7,Var 7],
+     Or [Not (Var 2),Not (Var 5),Not (Var 7),Var 7],
+     Or [Not (Var 3),Not (Var 6),Not (Var 7),Not (Var 7)],
+     Or [Var 3,Var 2,Not (Var 7)],Or [Var 5,Var 6],
+     Or [Not (Var 2),Not (Var 5),Var 7,Var 7,Var 7],Or [Var 3,Var 6],
+     Or [Not (Var 3),Not (Var 5),Var 7,Not (Var 7),Not (Var 7)],
+     Or [Var 2,Var 6],Or [Not (Var 6),Not (Var 5),Not (Var 7),Not (Var 7)],
+     Or [Var 5,Not (Var 7),Var 7],Or [Not (Var 2),Var 5,Var 7,Not (Var 7)],
+     Or [Not (Var 6),Not (Var 4),Var 7,Not (Var 7)],Or [Var 6,Not (Var 7)],
+     Or [Var 3,Not (Var 7)],Or [Var 2,Var 3],
+     Or [Not (Var 2),Not (Var 6),Not (Var 5),Not (Var 7),Not (Var 7)],
+     Or [Not (Var 2),Var 5,Var 7],Or [Var 3,Var 5],
+     Or [Not (Var 3),Not (Var 2),Not (Var 7),Not (Var 7)],
+     Or [Not (Var 2),Not (Var 5),Var 7,Not (Var 7),Var 7,Not (Var 7)],
+     Or [Var 2,Not (Var 5),Var 7],Or [Var 2,Var 6,Var 4,Not (Var 7)],
+     Or [Var 2,Not (Var 5),Var 7,Not (Var 7)],Or [Var 6,Var 5,Not (Var 7)],
+     Or [Var 4,Not (Var 7)],Or [Var 3,Var 6,Not (Var 7),Not (Var 7)]]
+  : int expression
+
+- val free = ref (firstFree (tmp2));
+stdIn:28.5-28.34 Warning: type vars not generalized because of
+   value restriction are instantiated to dummy types (X1,X2,...)
+
+val free = ref (False,False) : (int expression * ?.X1 expression) ref
+
+- isOrNil tmp2;
+val it = false : bool
+
+-  val arg2 = hd (getVars tmp2);
+val arg2 = 7 : int
+
+- val tmp3 = rmConstants(eval3 tmp1 (Var 7) True);
+stdIn:31.24-31.29 Error: unbound variable or constructor: eval3
+
+- val tmp3 = rmConstants(eval2 tmp2 (Var 7) True);
+val tmp3 =
+  And
+    [Or [Not (Var 3),Not (Var 6)],Or [Var 3,Var 2],Or [Var 3,Var 6],
+     Or [Var 2,Var 6],Not (Var 6),Var 6,Var 3,Or [Var 2,Var 3],
+     Or [Not (Var 2),Not (Var 6)],Or [Not (Var 3),Not (Var 2)],
+     Or [Var 2,Var 6,Var 4],Var 4,Or [Var 3,Var 6]] : int expression
+
+- val free = ref (firstFree (tmp3));
+stdIn:32.5-32.34 Warning: type vars not generalized because of
+   value restriction are instantiated to dummy types (X1,X2,...)
+
+val free = ref (Var 6,False) : (int expression * ?.X1 expression) ref
+
+- (#2 (!free)) = True;
+stdIn:33.1-33.20 Error: operator and operand do not agree [equality type required]
+  operator domain: ''Z * ''Z
+  operand:         ?.X1 expression * 'Y expression
+  in expression:
+    (fn {2=2,...} => 2) (! free) = True
+
+- val exptmp = ref tmp3;
+val exptmp =
+  ref
+    (And
+       [Or [Not (Var 3),Not (Var 6)],Or [Var 3,Var 2],Or [Var 3,Var 6],
+        Or [Var 2,Var 6],Not (Var 6),Var 6,Var 3,Or [Var 2,Var 3],
+        Or [Not (Var 2),Not (Var 6)],Or [Not (Var 3),Not (Var 2)],
+        Or [Var 2,Var 6,Var 4],Var 4,Or [Var 3,Var 6]]) : int expression ref
+
+- exptmp := rmConstants(eval 2 (!exptmp) (#1 (!free)) (#2 (!free)));
+stdIn:34.23-34.65 Error: operator and operand do not agree [overload - bad instantiation]
+  operator domain: ''Z list
+  operand:         'Y[INT]
+  in expression:
+    eval 2
+
+- (#2 (!free));
+val it = False : ?.X1 expression
+
+- exptmp := rmConstants(eval 2 (!exptmp) (#1 (!free)) False);
+stdIn:35.23-35.58 Error: operator and operand do not agree [overload - bad instantiation]
+  operator domain: ''Z list
+  operand:         'Y[INT]
+  in expression:
+    eval 2
+
+- free;
+val it = ref (Var 6,False) : (int expression * ?.X1 expression) ref
+
+- (#2 (!free));
+val it = False : ?.X1 expression
+
+- (#1 (!free));
+val it = Var 6 : int expression
+
+- exptmp := rmConstants(eval2 (!exptmp) (#1 (!free)) False);
+val it = () : unit
+
+- !exptmp;
+val it = False : int expression
+
+- tmp3;
+val it =
+  And
+    [Or [Not (Var 3),Not (Var 6)],Or [Var 3,Var 2],Or [Var 3,Var 6],
+     Or [Var 2,Var 6],Not (Var 6),Var 6,Var 3,Or [Var 2,Var 3],
+     Or [Not (Var 2),Not (Var 6)],Or [Not (Var 3),Not (Var 2)],
+     Or [Var 2,Var 6,Var 4],Var 4,Or [Var 3,Var 6]] : int expression
+
+- free;
+val it = ref (Var 6,False) : (int expression * ?.X1 expression) ref
+
+- free := firstFree (!exptmp);
+val it = () : unit
+
+- free;
+val it = ref (False,False) : (int expression * ?.X1 expression) ref
+
+- !exptmp;
+val it = False : int expression
+
+- val tmp = !exptmp;
+val tmp = False : int expression
+
+- exp;
+val it =
+  And
+    [Or [Not (Var 1),Not (Var 5),Var 7,Var 7],Or [Var 1,Var 4,Not (Var 7)],
+     Or [Not (Var 1),Var 6,Not (Var 7),Var 7,Var 7],
+     Or [Var 2,Var 5,Not (Var 7),Var 7],Or [Not (Var 4),Var 7,Var 7,Var 7],
+     Or [Var 7,Var 7,Var 7,Not (Var 7)],Or [Var 2,Not (Var 7),Var 7],
+     Or [Not (Var 3),Not (Var 1),Var 7,Var 7],Or [Var 5,Var 4,Not (Var 7)],
+     Or [Var 3,Var 6,Not (Var 7),Var 7],Or [Var 3,Var 1,Var 5,Not (Var 7)],
+     Or [Var 2,Var 5,Not (Var 7)],Or [Not (Var 1),Not (Var 4),Var 7],
+     Or [Not (Var 2),Not (Var 4),Var 7,Var 7],
+     Or [Not (Var 2),Not (Var 5),Not (Var 7),Var 7],
+     Or [Not (Var 3),Not (Var 6),Not (Var 7),Not (Var 7)],
+     Or [Var 3,Var 2,Not (Var 7)],Or [Var 5,Var 6],
+     Or [Not (Var 2),Not (Var 5),Var 7,Var 7,Var 7],Or [Var 3,Var 6],
+     Or [Var 1,Var 5,Var 4,Not (Var 7)],
+     Or [Not (Var 3),Not (Var 5),Var 7,Not (Var 7),Not (Var 7)],
+     Or [Not (Var 3),Var 1,Not (Var 5),Not (Var 7),Not (Var 7)],
+     Or [Var 2,Var 6],Or [Var 1,Not (Var 7)],
+     Or [Not (Var 6),Not (Var 5),Not (Var 7),Not (Var 7)],
+     Or [Var 5,Not (Var 7),Var 7],Or [Not (Var 2),Var 5,Var 7,Not (Var 7)],
+     Or [Not (Var 6),Not (Var 4),Var 7,Not (Var 7)],
+     Or [Var 3,Var 2,Var 1,Not (Var 7)],
+     Or [Not (Var 3),Var 1,Not (Var 6),Var 4,Not (Var 7),Not (Var 7)],
+     Or [Var 6,Not (Var 7)],Or [Var 3,Not (Var 7)],Or [Var 2,Var 3],
+     Or
+       [Not (Var 2),Not (Var 1),Not (Var 6),Not (Var 5),Not (Var 7),
+        Not (Var 7)],Or [Not (Var 2),Var 5,Var 7],Or [Var 3,Var 5],
+     Or [Not (Var 3),Not (Var 2),Not (Var 7),Not (Var 7)],
+     Or [Not (Var 2),Not (Var 5),Var 7,Not (Var 7),Var 7,Not (Var 7)],
+     Or [Var 2,Not (Var 5),Var 7],Or [Var 2,Var 6,Var 4,Not (Var 7)],
+     Or [Var 2,Not (Var 5),Var 7,Not (Var 7)],Or [Var 6,Var 5,Not (Var 7)],
+     Or [Var 4,Not (Var 7)],Or [Var 3,Var 6,Not (Var 7),Not (Var 7)]]
+  : int expression
+
+- tmp1;
+val it =
+  And
+    [Or [Not (Var 5),Var 7,Var 7],Or [Var 6,Not (Var 7),Var 7,Var 7],
+     Or [Var 2,Var 5,Not (Var 7),Var 7],Or [Not (Var 4),Var 7,Var 7,Var 7],
+     Or [Var 7,Var 7,Var 7,Not (Var 7)],Or [Var 2,Not (Var 7),Var 7],
+     Or [Not (Var 3),Var 7,Var 7],Or [Var 5,Var 4,Not (Var 7)],
+     Or [Var 3,Var 6,Not (Var 7),Var 7],Or [Var 2,Var 5,Not (Var 7)],
+     Or [Not (Var 4),Var 7],Or [Not (Var 2),Not (Var 4),Var 7,Var 7],
+     Or [Not (Var 2),Not (Var 5),Not (Var 7),Var 7],
+     Or [Not (Var 3),Not (Var 6),Not (Var 7),Not (Var 7)],
+     Or [Var 3,Var 2,Not (Var 7)],Or [Var 5,Var 6],
+     Or [Not (Var 2),Not (Var 5),Var 7,Var 7,Var 7],Or [Var 3,Var 6],
+     Or [Not (Var 3),Not (Var 5),Var 7,Not (Var 7),Not (Var 7)],
+     Or [Var 2,Var 6],Or [Not (Var 6),Not (Var 5),Not (Var 7),Not (Var 7)],
+     Or [Var 5,Not (Var 7),Var 7],Or [Not (Var 2),Var 5,Var 7,Not (Var 7)],
+     Or [Not (Var 6),Not (Var 4),Var 7,Not (Var 7)],Or [Var 6,Not (Var 7)],
+     Or [Var 3,Not (Var 7)],Or [Var 2,Var 3],
+     Or [Not (Var 2),Not (Var 6),Not (Var 5),Not (Var 7),Not (Var 7)],
+     Or [Not (Var 2),Var 5,Var 7],Or [Var 3,Var 5],
+     Or [Not (Var 3),Not (Var 2),Not (Var 7),Not (Var 7)],
+     Or [Not (Var 2),Not (Var 5),Var 7,Not (Var 7),Var 7,Not (Var 7)],
+     Or [Var 2,Not (Var 5),Var 7],Or [Var 2,Var 6,Var 4,Not (Var 7)],
+     Or [Var 2,Not (Var 5),Var 7,Not (Var 7)],Or [Var 6,Var 5,Not (Var 7)],
+     Or [Var 4,Not (Var 7)],Or [Var 3,Var 6,Not (Var 7),Not (Var 7)]]
+  : int expression
+
+- tmp2;
+val it =
+  And
+    [Or [Var 7,Var 7],Or [Var 6,Not (Var 7),Var 7,Var 7],
+     Or [Not (Var 4),Var 7,Var 7,Var 7],Or [Var 7,Var 7,Var 7,Not (Var 7)],
+     Or [Var 2,Not (Var 7),Var 7],Or [Not (Var 3),Var 7,Var 7],
+     Or [Var 3,Var 6,Not (Var 7),Var 7],Or [Not (Var 4),Var 7],
+     Or [Not (Var 2),Not (Var 4),Var 7,Var 7],
+     Or [Not (Var 2),Not (Var 7),Var 7],
+     Or [Not (Var 3),Not (Var 6),Not (Var 7),Not (Var 7)],
+     Or [Var 3,Var 2,Not (Var 7)],Or [Not (Var 2),Var 7,Var 7,Var 7],
+     Or [Var 3,Var 6],Or [Not (Var 3),Var 7,Not (Var 7),Not (Var 7)],
+     Or [Var 2,Var 6],Or [Not (Var 6),Not (Var 7),Not (Var 7)],
+     Or [Not (Var 6),Not (Var 4),Var 7,Not (Var 7)],Or [Var 6,Not (Var 7)],
+     Or [Var 3,Not (Var 7)],Or [Var 2,Var 3],
+     Or [Not (Var 2),Not (Var 6),Not (Var 7),Not (Var 7)],
+     Or [Not (Var 3),Not (Var 2),Not (Var 7),Not (Var 7)],
+     Or [Not (Var 2),Var 7,Not (Var 7),Var 7,Not (Var 7)],Or [Var 2,Var 7],
+     Or [Var 2,Var 6,Var 4,Not (Var 7)],Or [Var 2,Var 7,Not (Var 7)],
+     Or [Var 4,Not (Var 7)],Or [Var 3,Var 6,Not (Var 7),Not (Var 7)]]
+  : int expression
+
+- tmp3;
+val it =
+  And
+    [Or [Not (Var 3),Not (Var 6)],Or [Var 3,Var 2],Or [Var 3,Var 6],
+     Or [Var 2,Var 6],Not (Var 6),Var 6,Var 3,Or [Var 2,Var 3],
+     Or [Not (Var 2),Not (Var 6)],Or [Not (Var 3),Not (Var 2)],
+     Or [Var 2,Var 6,Var 4],Var 4,Or [Var 3,Var 6]] : int expression
+
+- val tmp3 = rmConstants(eval3 tmp1 (Var 7) False);
+stdIn:50.24-50.29 Error: unbound variable or constructor: eval3
+
+- val tmp3 = rmConstants(eval2 tmp2 (Var 7) False);
+val tmp3 =
+  And
+    [False,Not (Var 4),Not (Var 3),Not (Var 4),Or [Not (Var 2),Not (Var 4)],
+     Not (Var 2),Or [Var 3,Var 6],Or [Var 2,Var 6],Or [Var 2,Var 3],Var 2]
+  : int expression
+
+- val a = eval1 tmp2 (Var 7) False;
+stdIn:51.9-51.14 Error: unbound variable or constructor: eval1
+
+- val a = eval2 tmp3 (Var 7) False;
+
+uncaught exception Match [nonexhaustive match failure]
+  raised at: 01-project.sml:254.35
+- val a = eval2 tmp2 (Var 7) False;
+val a =
+  And
+    [Or [False,False],Or [Var 6,Not False,False,False],
+     Or [Not (Var 4),False,False,False],Or [False,False,False,Not False],
+     Or [Var 2,Not False,False],Or [Not (Var 3),False,False],
+     Or [Var 3,Var 6,Not False,False],Or [Not (Var 4),False],
+     Or [Not (Var 2),Not (Var 4),False,False],
+     Or [Not (Var 2),Not False,False],
+     Or [Not (Var 3),Not (Var 6),Not False,Not False],
+     Or [Var 3,Var 2,Not False],Or [Not (Var 2),False,False,False],
+     Or [Var 3,Var 6],Or [Not (Var 3),False,Not False,Not False],
+     Or [Var 2,Var 6],Or [Not (Var 6),Not False,Not False],
+     Or [Not (Var 6),Not (Var 4),False,Not False],Or [Var 6,Not False],
+     Or [Var 3,Not False],Or [Var 2,Var 3],
+     Or [Not (Var 2),Not (Var 6),Not False,Not False],
+     Or [Not (Var 3),Not (Var 2),Not False,Not False],
+     Or [Not (Var 2),False,Not False,False,Not False],Or [Var 2,False],
+     Or [Var 2,Var 6,Var 4,Not False],Or [Var 2,False,Not False],
+     Or [Var 4,Not False],Or [Var 3,Var 6,Not False,Not False]]
+  : int expression
+
+- tmp3;
+val it =
+  And
+    [False,Not (Var 4),Not (Var 3),Not (Var 4),Or [Not (Var 2),Not (Var 4)],
+     Not (Var 2),Or [Var 3,Var 6],Or [Var 2,Var 6],Or [Var 2,Var 3],Var 2]
+  : int expression
+
+- rmConstants (Or[False,False]);
+stdIn:53.1-53.30 Warning: type vars not generalized because of
+   value restriction are instantiated to dummy types (X1,X2,...)
+
+val it = False : ?.X1 expression
+
+- rmConstants (Or[False,False, Var 2]);
+val it = Var 2 : int expression
+
+- rmConstants (Or[False]);
+stdIn:55.1-55.24 Warning: type vars not generalized because of
+   value restriction are instantiated to dummy types (X1,X2,...)
+
+val it = False : ?.X1 expression
+
+- rmConstants (Or[True]);
+stdIn:56.1-56.23 Warning: type vars not generalized because of
+   value restriction are instantiated to dummy types (X1,X2,...)
+
+val it = True : ?.X1 expression
+
+- rmConstants (And[True, False]);
+stdIn:57.1-57.31 Warning: type vars not generalized because of
+   value restriction are instantiated to dummy types (X1,X2,...)
+
+val it = False : ?.X1 expression
+
+- False;
+val it = False : 'a expression
+
+- True;
+val it = True : 'a expression
+
+- Or [False, True];
+val it = Or [False,True] : 'a expression
+
+- rmConstarnts (Or [False, True]);
+stdIn:61.1-61.13 Error: unbound variable or constructor: rmConstarnts
+
+- rmConstants (Or [False, True]);
+stdIn:1.2-37.11 Warning: type vars not generalized because of
+   value restriction are instantiated to dummy types (X1,X2,...)
+
+val it = True : ?.X1 expression
+
+- rmConstants;
+val it = fn : ''a expression -> ''a expression
+
+- rmConstants (And[Or[False, False]]);
+stdIn:63.1-63.36 Warning: type vars not generalized because of
+   value restriction are instantiated to dummy types (X1,X2,...)
+
+val it = False : ?.X1 expression
+
+- rmConstants (And[Or[False, False], var 2]);
+stdIn:64.36-64.39 Error: unbound variable or constructor: var
+
+- rmConstants (And[Or[False, False], Var 2]);
+val it = And [False,Var 2] : int expression
+
+- rmConstants (Or[And[False, False], Var 2]);
+val it = Var 2 : int expression
+
+- rmConstants (Or[And[False, True], Var 2]);
+val it = Var 2 : int expression
+
+- rmConstants (Or[False, False]);
+stdIn:67.1-67.31 Warning: type vars not generalized because of
+   value restriction are instantiated to dummy types (X1,X2,...)
+
+val it = False : ?.X1 expression
+
+- rmConstants (And[False, Var 2]);
+val it = False : int expression
+
+- rmConstants (And[And[False, True], Var 2]);
+val it = False : int expression
+
+- rmConstants (And[Or[False, True], Var 2]);
+val it = Var 2 : int expression
+
+- rmConstants (And[Or[False, False], Var 2]);
+val it = And [False,Var 2] : int expression
+
+- List.exists (fn x => x = True) [];
+stdIn:72.24 Warning: calling polyEqual
+
+val it = false : bool
+
+- use "01-project.sml";
+[opening 01-project.sml]
+datatype 'a expr
+  = !! of 'a expr
+  | /\ of 'a expr * 'a expr
+  | <=> of 'a expr * 'a expr
+  | ==> of 'a expr * 'a expr
+  | F
+  | T
+  | V of 'a
+  | \/ of 'a expr * 'a expr
+
+infix 5 <=>
+
+infixr 6 ==>
+
+infix 7 \/
+
+infix 8 /\
+
+datatype 'a expression
+  = And of 'a expression list
+  | Eq of 'a expression list
+  | False
+  | Imp of 'a expression * 'a expression
+  | Not of 'a expression
+  | Or of 'a expression list
+  | True
+  | Var of 'a
+
+datatype 'a stream = Next of 'a * (unit -> 'a stream)
+
+val lcg = fn : int -> ?.intinf stream
+
+val int2bool = fn : IntInf.int -> bool
+
+exception InvalidCNF
+
+exception NotImplemented
+
+val it = () : unit
+
+val it = () : unit
+
+val it = () : unit
+
+01-project.sml:51.61-51.63 Warning: calling polyEqual
+
+val getVars = fn : ''a expression -> ''a list
+
+01-project.sml:59.31 Warning: calling polyEqual
+
+val eval = fn : ''a list -> ''a expression -> bool
+
+val rmEmpty = fn : 'a expression -> 'a expression
+
+01-project.sml:94.6-100.59 Warning: match nonexhaustive
+          Eq (x1 :: x2 :: nil) => ...
+          Eq (x1 :: x2 :: xs) => ...
+          And (x1 :: x2 :: nil) => ...
+          And (x :: xs) => ...
+          Or (x1 :: x2 :: nil) => ...
+          Or (x :: xs) => ...
+  
+
+val beautify = fn : 'a expression -> 'a expr
+
+val pushNegations = fn : 'a expression -> 'a expression
+
+01-project.sml:154.41 Warning: calling polyEqual
+
+01-project.sml:152.48-152.50 Warning: calling polyEqual
+
+01-project.sml:161.40 Warning: calling polyEqual
+
+01-project.sml:159.47-159.49 Warning: calling polyEqual
+
+val rmConstants = fn : ''a expression -> ''a expression
+
+01-project.sml:181.34 Warning: calling polyEqual
+
+01-project.sml:182.91 Warning: calling polyEqual
+
+01-project.sml:183.89 Warning: calling polyEqual
+
+01-project.sml:184.33 Warning: calling polyEqual
+
+01-project.sml:185.89 Warning: calling polyEqual
+
+val rmVars = fn : ''a expression -> ''a expression
+
+01-project.sml:195.7 Warning: calling polyEqual
+
+val simplify = fn : ''a expression -> ''a expression
+
+val getNext = fn : 'a stream -> 'a stream
+
+val getCurr = fn : 'a stream -> 'a
+
+val prTestEq = fn : int -> ''a expression -> ''a expression -> bool
+
+val isCNF = fn : 'a expression -> bool
+
+val toWolframLang = fn : ('a -> string) -> 'a expression -> string
+
+01-project.sml:245.39 Warning: calling polyEqual
+
+01-project.sml:251.2-254.35 Warning: match nonexhaustive
+          And y => ...
+          Or y => ...
+          Not y => ...
+  
+
+val eval2 = fn
+  : ''a expression -> ''a expression -> ''a expression -> ''a expression
+
+val firstFree = fn : 'a expression -> 'a expression * 'b expression
+
+val isOrNil = fn : 'a expression -> bool
+
+01-project.sml:300.18-300.20 Warning: calling polyEqual
+
+01-project.sml:301.27 Warning: calling polyEqual
+
+01-project.sml:291.5-325.38 Warning: match nonexhaustive
+          And exps => ...
+          Or exps => ...
+          True => ...
+          False => ...
+          Var x => ...
+          Not (Var x) => ...
+  
+
+val tretjiKorak = fn : ''a expression -> ''a list -> ''a list option
+val drugiKorak = fn : ''a expression -> ''a list -> ''a list option
+val satSolver = fn : ''a expression -> ''a list option
+
+val bruteforce = fn : 'a -> 'b option
+
+val problemReduction = fn : 'a -> 'b -> 'c -> 'd expression
+
+val solutionRepresentation = fn : 'a -> 'b option
+
+val it = () : unit
+
+- rmConstants (And[Or[False, False], Var 2]);
+val it = False : int expression
+
+- rmConstants (And[Or[False, True], Var 2]);
+val it = Var 2 : int expression
+
+- rmConstants (And[And[False, True], Var 2]);
+val it = False : int expression
+
+- rmConstants (And[False, Var 2]);
+val it = False : int expression
+
+- exp;
+val it =
+  And
+    [Or [Not (Var 1),Not (Var 5),Var 7,Var 7],Or [Var 1,Var 4,Not (Var 7)],
+     Or [Not (Var 1),Var 6,Not (Var 7),Var 7,Var 7],
+     Or [Var 2,Var 5,Not (Var 7),Var 7],Or [Not (Var 4),Var 7,Var 7,Var 7],
+     Or [Var 7,Var 7,Var 7,Not (Var 7)],Or [Var 2,Not (Var 7),Var 7],
+     Or [Not (Var 3),Not (Var 1),Var 7,Var 7],Or [Var 5,Var 4,Not (Var 7)],
+     Or [Var 3,Var 6,Not (Var 7),Var 7],Or [Var 3,Var 1,Var 5,Not (Var 7)],
+     Or [Var 2,Var 5,Not (Var 7)],Or [Not (Var 1),Not (Var 4),Var 7],
+     Or [Not (Var 2),Not (Var 4),Var 7,Var 7],
+     Or [Not (Var 2),Not (Var 5),Not (Var 7),Var 7],
+     Or [Not (Var 3),Not (Var 6),Not (Var 7),Not (Var 7)],
+     Or [Var 3,Var 2,Not (Var 7)],Or [Var 5,Var 6],
+     Or [Not (Var 2),Not (Var 5),Var 7,Var 7,Var 7],Or [Var 3,Var 6],
+     Or [Var 1,Var 5,Var 4,Not (Var 7)],
+     Or [Not (Var 3),Not (Var 5),Var 7,Not (Var 7),Not (Var 7)],
+     Or [Not (Var 3),Var 1,Not (Var 5),Not (Var 7),Not (Var 7)],
+     Or [Var 2,Var 6],Or [Var 1,Not (Var 7)],
+     Or [Not (Var 6),Not (Var 5),Not (Var 7),Not (Var 7)],
+     Or [Var 5,Not (Var 7),Var 7],Or [Not (Var 2),Var 5,Var 7,Not (Var 7)],
+     Or [Not (Var 6),Not (Var 4),Var 7,Not (Var 7)],
+     Or [Var 3,Var 2,Var 1,Not (Var 7)],
+     Or [Not (Var 3),Var 1,Not (Var 6),Var 4,Not (Var 7),Not (Var 7)],
+     Or [Var 6,Not (Var 7)],Or [Var 3,Not (Var 7)],Or [Var 2,Var 3],
+     Or
+       [Not (Var 2),Not (Var 1),Not (Var 6),Not (Var 5),Not (Var 7),
+        Not (Var 7)],Or [Not (Var 2),Var 5,Var 7],Or [Var 3,Var 5],
+     Or [Not (Var 3),Not (Var 2),Not (Var 7),Not (Var 7)],
+     Or [Not (Var 2),Not (Var 5),Var 7,Not (Var 7),Var 7,Not (Var 7)],
+     Or [Var 2,Not (Var 5),Var 7],Or [Var 2,Var 6,Var 4,Not (Var 7)],
+     Or [Var 2,Not (Var 5),Var 7,Not (Var 7)],Or [Var 6,Var 5,Not (Var 7)],
+     Or [Var 4,Not (Var 7)],Or [Var 3,Var 6,Not (Var 7),Not (Var 7)]]
+  : int ?.expression
+
+- val exp = (And [Or [Not (Var 1), Not (Var 5), Var 7, Var 7], Or [Var 1, Var 4, Not (Var 7)], Or [Not (Var 1), Var 6, Not (Var 7), Var 7, Var 7], Or [Var 2, Var 5, Not (Var 7), Var 7], Or [Not (Var 4), Var 7, Var 7, Var 7], Or [Var 7, Var 7, Var 7, Not (Var 7)], Or [Var 2, Not (Var 7), Var 7], Or [Not (Var 3), Not (Var 1), Var 7, Var 7], Or [Var 5, Var 4, Not (Var 7)], Or [Var 3, Var 6, Not (Var 7), Var 7], Or [Var 3, Var 1, Var 5, Not (Var 7)], Or [Var 2, Var 5, Not (Var 7)], Or [Not (Var 1), Not (Var 4), Var 7], Or [Not (Var 2), Not (Var 4), Var 7, Var 7], Or [Not (Var 2), Not (Var 5), Not (Var 7), Var 7], Or [Not (Var 3), Not (Var 6), Not (Var 7), Not (Var 7)], Or [Var 3, Var 2, Not (Var 7)], Or [Var 5, Var 6], Or [Not (Var 2), Not (Var 5), Var 7, Var 7, Var 7], Or [Var 3, Var 6], Or [Var 1, Var 5, Var 4, Not (Var 7)], Or [Not (Var 3), Not (Var 5), Var 7, Not (Var 7), Not (Var 7)], Or [Not (Var 3), Var 1, Not (Var 5), Not (Var 7), Not (Var 7)], Or [Var 2, Var 6], Or [Var 1, Not (Var 7)], Or [Not (Var 6), Not (Var 5), Not (Var 7), Not (Var 7)], Or [Var 5, Not (Var 7), Var 7], Or [Not (Var 2), Var 5, Var 7, Not (Var 7)], Or [Not (Var 6), Not (Var 4), Var 7, Not (Var 7)], Or [Var 3, Var 2, Var 1, Not (Var 7)], Or [Not (Var 3), Var 1, Not (Var 6), Var 4, Not (Var 7), Not (Var 7)], Or [Var 6, Not (Var 7)], Or [Var 3, Not (Var 7)], Or [Var 2, Var 3], Or [Not (Var 2), Not (Var 1), Not (Var 6), Not (Var 5), Not (Var 7), Not (Var 7)], Or [Not (Var 2), Var 5, Var 7], Or [Var 3, Var 5], Or [Not (Var 3), Not (Var 2), Not (Var 7), Not (Var 7)], Or [Not (Var 2), Not (Var 5), Var 7, Not (Var 7), Var 7, Not (Var 7)], Or [Var 2, Not (Var 5), Var 7], Or [Var 2, Var 6, Var 4, Not (Var 7)], Or [Var 2, Not (Var 5), Var 7, Not (Var 7)], Or [Var 6, Var 5, Not (Var 7)], Or [Var 4, Not (Var 7)], Or [Var 3, Var 6, Not (Var 7), Not (Var 7)]]);
+val exp =
+  And
+    [Or [Not (Var 1),Not (Var 5),Var 7,Var 7],Or [Var 1,Var 4,Not (Var 7)],
+     Or [Not (Var 1),Var 6,Not (Var 7),Var 7,Var 7],
+     Or [Var 2,Var 5,Not (Var 7),Var 7],Or [Not (Var 4),Var 7,Var 7,Var 7],
+     Or [Var 7,Var 7,Var 7,Not (Var 7)],Or [Var 2,Not (Var 7),Var 7],
+     Or [Not (Var 3),Not (Var 1),Var 7,Var 7],Or [Var 5,Var 4,Not (Var 7)],
+     Or [Var 3,Var 6,Not (Var 7),Var 7],Or [Var 3,Var 1,Var 5,Not (Var 7)],
+     Or [Var 2,Var 5,Not (Var 7)],Or [Not (Var 1),Not (Var 4),Var 7],
+     Or [Not (Var 2),Not (Var 4),Var 7,Var 7],
+     Or [Not (Var 2),Not (Var 5),Not (Var 7),Var 7],
+     Or [Not (Var 3),Not (Var 6),Not (Var 7),Not (Var 7)],
+     Or [Var 3,Var 2,Not (Var 7)],Or [Var 5,Var 6],
+     Or [Not (Var 2),Not (Var 5),Var 7,Var 7,Var 7],Or [Var 3,Var 6],
+     Or [Var 1,Var 5,Var 4,Not (Var 7)],
+     Or [Not (Var 3),Not (Var 5),Var 7,Not (Var 7),Not (Var 7)],
+     Or [Not (Var 3),Var 1,Not (Var 5),Not (Var 7),Not (Var 7)],
+     Or [Var 2,Var 6],Or [Var 1,Not (Var 7)],
+     Or [Not (Var 6),Not (Var 5),Not (Var 7),Not (Var 7)],
+     Or [Var 5,Not (Var 7),Var 7],Or [Not (Var 2),Var 5,Var 7,Not (Var 7)],
+     Or [Not (Var 6),Not (Var 4),Var 7,Not (Var 7)],
+     Or [Var 3,Var 2,Var 1,Not (Var 7)],
+     Or [Not (Var 3),Var 1,Not (Var 6),Var 4,Not (Var 7),Not (Var 7)],
+     Or [Var 6,Not (Var 7)],Or [Var 3,Not (Var 7)],Or [Var 2,Var 3],
+     Or
+       [Not (Var 2),Not (Var 1),Not (Var 6),Not (Var 5),Not (Var 7),
+        Not (Var 7)],Or [Not (Var 2),Var 5,Var 7],Or [Var 3,Var 5],
+     Or [Not (Var 3),Not (Var 2),Not (Var 7),Not (Var 7)],
+     Or [Not (Var 2),Not (Var 5),Var 7,Not (Var 7),Var 7,Not (Var 7)],
+     Or [Var 2,Not (Var 5),Var 7],Or [Var 2,Var 6,Var 4,Not (Var 7)],
+     Or [Var 2,Not (Var 5),Var 7,Not (Var 7)],Or [Var 6,Var 5,Not (Var 7)],
+     Or [Var 4,Not (Var 7)],Or [Var 3,Var 6,Not (Var 7),Not (Var 7)]]
+  : int expression
+
+- satSolver exp;
+val it = SOME [6,3] : int list option
+
+- satSolver (And [Or [Var 1, Var 3], Or [Not (Var 1), Not (Var 3)], Or[Not (Var 3), Var 1], Or[Var 3, Not (Var 1)]]);
+val it = NONE : int list option
+
+- satSolver (And [Or [Var 1, Var 3], Or [Not (Var 1), Not (Var 3)], Or[Not (Var 3), Var 1]]);
+val it = SOME [1] : int list option
+
+- satSolver (And [Or [Var 1, Not (Var 1)]]);
+val it = SOME [1] : int list option
+
+- satSolver (And [Or [Var 1, Not (Var 2)]]);
+val it = SOME [1] : int list option
+
+- satSolver (True : int expression);
+val it = SOME [] : int list option
+
+- satSolver (False : int expression);
+val it = NONE : int list option
+
+- 

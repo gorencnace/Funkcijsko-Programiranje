@@ -1,0 +1,14 @@
+#lang racket
+
+(define (potenca x n)
+  (if (= n 0)
+      1
+      (* x (potenca x (-n 1)))))
+
+(define (moj_if pogoj res nires)
+  (if pogoj res nires))
+
+(define (potenca_moj x n)
+  (moj_if (= n 0)
+          1
+          (* x (potenca_moj x (-n 1)))))
