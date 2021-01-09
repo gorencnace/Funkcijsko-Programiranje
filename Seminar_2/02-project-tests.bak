@@ -1,0 +1,227 @@
+#lang racket
+(require "02-project.rkt")
+
+(require rackunit)
+(require rackunit/text-ui)
+
+(define all-tests
+  (test-suite
+   "all"
+   (test-suite
+    "private"
+    (test-case "zz" (check-equal?
+                       (fri (zz 4) null)
+                       (zz 4)))
+    (test-case "qq" (check-equal?
+                       (fri (qq (zz 4) (zz 2)) null)
+                       (qq (zz 2) (zz 1))))
+    (test-case "true" (check-equal?
+                       (fri (true) null)
+                       (true)))
+    (test-case "false" (check-equal?
+                       (fri (false) null)
+                       (false)))
+    (test-case "seq" (check-equal?
+                       (fri (.. (zz 2) (.. (qq (zz 4) (zz 2)) (empty))) null)
+                       (.. (zz 2) (.. (qq (zz 2) (zz 1)) (empty)))))
+    (test-case "set" (check-equal?
+                       (fri (s (set (zz 2) (qq (zz 4) (zz 2)) (true) (false) (true) (qq (zz 2) (zz 1)))) null)
+                       (s (set (zz 2) (qq (zz 4) (zz 2)) (true)))))
+    (test-case "if" (check-equal?
+                       (fri (if-then-else (=? (qq (zz 4) (zz 2)) (qq (zz 2) (zz 1))) (qq (zz 2) (zz 4)) (qq (zz 4) (zz 6))) null)
+                       (qq (zz 1) (zz 2))))
+    (test-case "is-zz1" (check-equal?
+                       (fri (is-zz? (zz 2)) null)
+                       (true)))
+    (test-case "is-zz2" (check-equal?
+                       (fri (is-zz? (zz 2)) null)
+                       (true)))
+    (test-case "is-qq1" (check-equal?
+                       (fri (is-qq? (qq (zz 4) (zz 2))) null)
+                       (true)))
+    (test-case "is-qq2" (check-equal?
+                       (fri (is-zz? (zz 2)) null)
+                       (false)))
+    (test-case "is-bool1" (check-equal?
+                       (fri (is-zz? (zz 2)) null)
+                       (true)))
+    (test-case "is-bool2" (check-equal?
+                       (fri (is-zz? (zz 2)) null)
+                       (false)))
+    (test-case "is-seq1" (check-equal?
+                       (fri (is-zz? (zz 2)) null)
+                       (true)))
+    (test-case "is-seq2" (check-equal?
+                       (fri (is-zz? (zz 2)) null)
+                       (false)))
+    (test-case "is-prop-seq1" (check-equal?
+                       (fri (is-zz? (zz 2)) null)
+                       (true)))
+    (test-case "is-prop-seq2" (check-equal?
+                       (fri (is-zz? (zz 2)) null)
+                       (false)))
+    (test-case "is-empty1" (check-equal?
+                       (fri (is-zz? (zz 2)) null)
+                       (true)))
+    (test-case "is-empty2" (check-equal?
+                       (fri (is-zz? (zz 2)) null)
+                       (false)))
+    (test-case "is-set1" (check-equal?
+                       (fri (is-zz? (zz 2)) null)
+                       (true)))
+    (test-case "is-set2" (check-equal?
+                       (fri (is-zz? (zz 2)) null)
+                       (false)))
+
+    (test-case "" (check-equal?
+                       (fri (add (mul (true) (true)) (false)) null)
+                       (true)))
+    
+    (test-case "proper-seq1" (check-equal?
+                              (is-proper-seq? (.. (zz 1) (.. (zz 2) (empty))))
+                            (is-proper-seq? (.. (zz 1) (.. (zz 2) (empty))))))
+    
+    (test-case "proper-seq2" (check-equal?
+                              (fri (.. (is-proper-seq? (.. (zz 1) (.. (zz 2) (empty))))
+                                       (is-proper-seq? (.. (zz 1) (.. (zz 2) (zz 3))))) null)
+                              (.. (true) (false))))
+ 
+    (test-case "vars-and-rat1" (check-equal?
+                                    (fri (vars "a" (add (qq (zz 1) (zz 2)) (qq (zz -3) (zz 4)))
+                                               (mul (valof "a") (valof "a"))) null)
+                                    (qq (zz 1) (zz 16))))
+    
+    (test-case "vars-and-rat2" (check-equal?
+                                    (fri (vars (list "a" "b")
+                                             (list (mul (qq (zz 1) (zz 2)) (qq (zz -3) (zz 4)))
+                                                   (~ (add (qq (zz 1) (zz 2)) (qq (zz -3) (zz 4)))))
+                                             (add (valof "a") (valof "b"))) null)
+                                    (qq (zz -1) (zz 8))))
+    
+    (test-case "fib1" (check-equal?
+                       (fri (call (fun "fib" (list "n")
+                                       (if-then-else (leq? (valof "n") (zz 2))
+                                                     (zz 1) (add (call (valof "fib")
+                                                                       (list (add (valof "n") (zz -1))))
+                                                                 (call (valof "fib")
+                                                                       (list (add (valof "n") (zz -2)))))))
+                                  (list (zz 10))) null)
+                       (zz 55)))
+    
+    (test-case "seq1" (check-equal?
+                       (fri (all? (.. (true)
+                                      (.. (leq? (false) (true))
+                                          (.. (=? (.. (zz -19) (zz 0))
+                                                  (.. (left (add (qq (zz 1) (zz 5)) (zz -4)))
+                                                      (zz 0)))
+                                              (empty)))))
+                            null)
+                       (true)))
+    
+    (test-case "seq1" (check-equal?
+                       (fri (vars (list "s1" "s2" "s3")
+                                  (list (s (set (false) (true)))
+                                        (s (set (zz 1) (zz 2) (zz 3)))
+                                        (s (set (zz 4) (zz 4))))
+                                  (mul (valof "s1") (mul (valof "s2") (valof "s3")))) null)
+                       (s
+                        (set
+                         (.. (true) (.. (zz 1) (zz 4)))
+                         (.. (true) (.. (zz 3) (zz 4)))
+                         (.. (false) (.. (zz 2) (zz 4)))
+                         (.. (true) (.. (zz 2) (zz 4)))
+                         (.. (false) (.. (zz 1) (zz 4)))
+                         (.. (false) (.. (zz 3) (zz 4)))))))
+    
+    (test-case "variables1" (check-equal?
+                           (fri (vars (list "a" "b" "c")
+                                      (list (zz 1) (zz 2) (zz 3))
+                                      (fun "linear" (list "x1" "x2" "x3")
+                                           (add (mul (valof "a") (valof "x1"))
+                                                (add (mul (valof "b") (valof "x2"))
+                                                     (mul (valof "c") (valof "x3")))))) null)
+                           (closure (list (cons "a" (zz 1))(cons "b" (zz 2)) (cons "c" (zz 3)))
+                                    (fun "linear" '("x1" "x2" "x3")
+                                         (add (mul (valof "a") (valof "x1"))
+                                              (add (mul (valof "b") (valof "x2"))
+                                                   (mul (valof "c") (valof "x3")))))))))
+   
+   (test-suite
+    "misc"
+    (test-case "add-seq" (check-equal?
+                          (fri (add (.. (false) (empty))
+                                    (.. (zz 3) (empty))) null)
+                          (.. (false) (.. (zz 3) (empty)))))
+  
+    (test-case "add-empty" (check-equal?
+                            (fri (add (empty) (empty)) null)
+                            (empty))))
+   
+   (test-case
+    "long-long"
+    (check-equal?
+     (fri
+      (vars "a" (zz 10)
+            (vars (list "f" "g")
+                  (list (fun "" (list "a" "b")
+                             (add (valof "a") (mul (zz 5) (valof "b"))))
+                        (fun "" (list "c")
+                             (add (valof "a") (valof "c"))))
+                  (vars (list "a" "d" "g" "e")
+                        (list (zz 1)
+                              (call (valof "g") (list (zz -9)))
+                              (fun "" (list "x")
+                                   (add (valof "a") (mul (valof "x")
+                                                         (call (valof "f")
+                                                               (list (zz 1) (valof "a"))))))
+                              (fun "" (list "f" "x")
+                                 (call (valof "f") (list (valof "x")))))
+                        (vars (list "fib" "test" "unit-fun" "proc")
+                              (list (fun "fib" (list "n")
+                                         (if-then-else (leq? (valof "n") (zz 2))
+                                                       (zz 1)
+                                                       (add (call (valof "fib")
+                                                                (list (add (valof "n")
+                                                                           (zz -1))))
+                                                            (call (valof "fib")
+                                                                  (list (add (valof "n")
+                                                                             (zz -2)))))))
+                                  (fun "" (list "x")
+                                       (add (valof "x") (zz 2)))
+                                  
+                                  (fun "" null
+                                       (add (inv (add (valof "a")
+                                                      (valof "a")))
+                                            (valof "a")))
+                                  
+                                  (proc ""
+                                        (folding
+                                         (fun "" (list "x" "acc") (mul (valof "x") (valof "acc")))
+                                         (zz 1)
+                                         (.. (valof "a")
+                                             (.. (zz 2)
+                                                 (.. (zz 3)
+                                                     (.. (zz 4)
+                                                         (.. (call (valof "g")
+                                                                   (list (zz 5)))
+                                                             (empty)))))))))
+                              
+                              
+                            (.. (call (valof "unit-fun") null)
+                                (.. (call (valof "proc") null)
+                                    (add (call (valof "g")
+                                               (list (add (zz 5)
+                                                          (call (valof "test")
+                                                                (list (zz 3))))))
+                                         (add (valof "d")
+                                              (add (call (valof "f")
+                                                         (list (zz -1) (zz -2)))
+                                                   (add (valof "a")
+                                                        (add (call (valof "fib")
+                                                                   (list (zz 5)))
+                                                             (call (valof "e")
+                                                                   (list (valof "test") (zz 3))))))))))))))
+      null)
+     (.. (qq (zz 3) (zz 2)) (.. (zz 6360) (zz 521)))))))
+
+(run-tests all-tests)
